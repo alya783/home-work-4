@@ -1,0 +1,29 @@
+{
+    "cucumberautocomplete.steps": [
+        "features/step_definitions/**/*.js",
+    ],
+    "cucumberautocomplete.syncfeatures": "test/features/*.feature",
+    "cucumberautocomplete.smartSnippets": true,
+    "cucumberautocomplete.stepsInvariants": true,
+    "highlight.regexes": {
+        "(<[^:]+?>)": { // A regex will be created from this string, don't forget to double escape it
+          "regexFlags": "g", // Flags used when building this regex
+          // "filterLanguageRegex": "markdown", // Apply only if current file's language matches this regex. Requires double escaping
+          "filterFileRegex": ".*\\.feature", // Apply only if the current file's path matches this regex. Requires double escaping
+          "decorations": [ // Decoration options to apply to the capturing groups
+            { "color": "yellow" }, // Decoration options to apply to the first capturing group, in this case "//TODO"
+            // { "color": "red" } // Decoration options to apply to the second capturing group, in this case ":"
+          ]
+        },
+
+        "(<.+?[:].+?>)": { // A regex will be created from this string, don't forget to double escape it
+          "regexFlags": "g", // Flags used when building this regex
+          // "filterLanguageRegex": "markdown", // Apply only if current file's language matches this regex. Requires double escaping
+          "filterFileRegex": ".*\\.feature", // Apply only if the current file's path matches this regex. Requires double escaping
+          "decorations": [ // Decoration options to apply to the capturing groups
+            { "color": "green" }, // Decoration options to apply to the first capturing group, in this case "//TODO"
+            // { "color": "red" } // Decoration options to apply to the second capturing group, in this case ":"
+          ]
+        }
+      }
+}
