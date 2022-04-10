@@ -18,23 +18,35 @@ const bsCaps = [
             "osVersion": "10",
             "local": "false",
             "seleniumVersion": "3.5.2",
-            "userName": process.env.USER,
-            "accessKey": process.env.KEY,
+            "userName": "bsuser_0jkFV4",
+            "accessKey": "zwpckX6Ae16s4pKYfNci",
         },
         "browserName": "Edge",
         "browserVersion": "latest-beta",
     },
-    {
+    /*{
         'bstack:options': {
             "os": "Windows",
             "osVersion": "10",
             "local": "false",
             "seleniumVersion": "3.5.2",
-            "userName": process.env.USER,
-            "accessKey": process.env.KEY,
+            "userName": "bsuser_0jkFV4",
+            "accessKey": "zwpckX6Ae16s4pKYfNci",
         },
         "browserName": "Firefox",
-        "browserVersion": "latest-beta",
+        "browserVersion": "latest-beta", // эта версия не запустилась, не получилось разобраться, поэтому запустила на другой
+    },*/
+    {
+        'bstack:options': {
+            "os": "Windows",
+            "osVersion": "10",
+            "local": "false",
+            "seleniumVersion": "3.14.0",
+            "userName": "bsuser_0jkFV4",
+            "accessKey": "zwpckX6Ae16s4pKYfNci",
+        },
+        "browserName": "Firefox",
+        "browserVersion": "97.0",
     },
     {
         'bstack:options': {
@@ -42,12 +54,12 @@ const bsCaps = [
             "osVersion": "Monterey",
             "local": "false",
             "seleniumVersion": "3.14.0",
-            "userName": process.env.USER,
-            "accessKey": process.env.KEY,
+            "userName": "bsuser_0jkFV4",
+            "accessKey": "zwpckX6Ae16s4pKYfNci",
         },
         "browserName": "Safari",
         "browserVersion": "15.0",
-    }
+    },
 ];
 
 const localCaps = [{
@@ -63,17 +75,19 @@ const localCaps = [{
 const bsServices = ['browserstack'];
 const localServices = ['chromedriver'];
 exports.config = {
-    user: process.env.USER,
-    key: process.env.KEY,
+    user: "bsuser_0jkFV4",
+    key: "zwpckX6Ae16s4pKYfNci",
     specs: [
         './specs/**/*.js'
     ],
     exclude: [
         // 'path/to/excluded/files'
     ],
+    services: bsServices,
+    capabilities: bsCaps,
     automationProtocol: 'webdriver',
     maxInstances: 10,
-    capabilities: process.env.HUB === 'bs' ? bsCaps : localCaps,
+    //capabilities: process.env.HUB === 'bs' ? bsCaps : localCaps,
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     logLevel: 'warn',
     bail: 0,
@@ -147,8 +161,19 @@ exports.config = {
      * @param {Object} config wdio configuration object
      * @param {Array.<Object>} capabilities list of capabilities details
      */
-    // onPrepare: function (config, capabilities) {
-    // },
+    
+    
+    onPrepare: function (config, capabilities) {
+        const fs = require('fs');
+        const fsExtra = require('fs-extra');
+        const folderName = './screenshots';
+
+        if (!fs.existsSync(folderName)){
+            fs.mkdirSync(folderName);
+        }
+
+        fsExtra.emptyDirSync(folderName);
+    },
     /**
      * Gets executed before a worker process is spawned and can be used to initialise specific service
      * for that worker as well as modify runtime environments in an async fashion.
@@ -243,7 +268,8 @@ exports.config = {
      */
     afterTest: async function (test, context, { error, result, duration, passed, retries }) {
         if (!passed) {
-            await browser.takeScreenshot();
+            const filename = new Date().toLocaleString().replace(/[\/\s:,]/g, '_')+ "_" +(test.title).replace(/[\s.,%-]/g, '_');
+            await browser.saveScreenshot(`./screenshots/${filename}.png`);
         }
     },
 
