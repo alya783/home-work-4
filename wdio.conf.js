@@ -84,10 +84,10 @@ exports.config = {
         // 'path/to/excluded/files'
     ],
     services: bsServices,
-    capabilities: bsCaps,
+    //capabilities: bsCaps,
     automationProtocol: 'webdriver',
     maxInstances: 10,
-    //capabilities: process.env.HUB === 'bs' ? bsCaps : localCaps,
+    capabilities: process.env.HUB === 'bs' ? bsCaps : localCaps,
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     logLevel: 'warn',
     bail: 0,
